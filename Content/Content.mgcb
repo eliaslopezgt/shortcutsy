@@ -1,0 +1,25 @@
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:Windows
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+/source:Content/Font.spritefont
+/platform:Windows
+/profile:Reach
+/compress:False
+/build:Font.spritefont
+
+/source:Content/LargeFont.spritefont
+/platform:Windows
+/profile:Reach
+/compress:False
+/build:LargeFont.spritefont

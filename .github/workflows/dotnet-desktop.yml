@@ -1,0 +1,129 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest
+
+    env:
+      Solution_Name: shortcutsy.sln
+      CertificatePassword: ${{ secrets.CERTIFICATE_PASSWORD }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=${{ matrix.configuration }}
+
+    - name: Build
+      run: msbuild $env:Solution_Name /p:Configuration=${{ matrix.configuration }} /p:Platform=x64
+
+    - name: Decode certificate
+      if: matrix.configuration == 'Release'
+      run: |
+        $pfxBytes = [System.Convert]::FromBase64String("${{ secrets.CERTIFICATE_BASE64 }}")
+        [System.IO.File]::WriteAllBytes("shortcutsy.pfx", $pfxBytes)
+
+    - name: Find signtool
+      if: matrix.configuration == 'Release'
+      id: find_signtool
+      run: |
+        $signtool = Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits\10\bin" -Filter "signtool.exe" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*x64*" } | Select-Object -First 1
+        if ($signtool) {
+          Write-Output "Found signtool at: $($signtool.FullName)"
+          Write-Output "signtool_path=$($signtool.FullName)" >> $env:GITHUB_OUTPUT
+        } else {
+          Write-Output "signtool_path=" >> $env:GITHUB_OUTPUT
+        }
+
+    - name: Find exe
+      if: matrix.configuration == 'Release'
+      id: find_exe
+      run: |
+        $exe = Get-ChildItem -Path . -Filter "Shortcutsy.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($exe) {
+          Write-Output "Found exe at: $($exe.FullName)"
+          Write-Output "exe_path=$($exe.FullName)" >> $env:GITHUB_OUTPUT
+        } else {
+          Write-Output "exe_path=" >> $env:GITHUB_OUTPUT
+        }
+
+    - name: Sign executable
+      if: matrix.configuration == 'Release'
+      run: |
+        & "${{ steps.find_signtool.outputs.signtool_path }}" sign /f shortcutsy.pfx /p $env:CertificatePassword /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 "${{ steps.find_exe.outputs.exe_path }}"
+
+    - name: Install WiX
+      if: matrix.configuration == 'Release'
+      run: dotnet tool install --global wix
+
+    - name: Build MSI
+      if: matrix.configuration == 'Release'
+      id: build_msi
+      run: |
+        $exePath = "${{ steps.find_exe.outputs.exe_path }}"
+        $sourceDir = Split-Path -Parent $exePath
+        wix build Product.wxs -d SourceDir="$sourceDir" -o Shortcutsy.msi
+
+    - name: Upload MSI
+      if: matrix.configuration == 'Release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Shortcutsy-${{ matrix.configuration }}-MSI
+        path: Shortcutsy.msi
+
+    - name: Upload build artifacts
+      if: matrix.configuration == 'Release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Shortcutsy-${{ matrix.configuration }}
+        path: ${{ steps.find_exe.outputs.exe_path }}
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Download MSI
+      uses: actions/download-artifact@v4
+      with:
+        name: Shortcutsy-Release-MSI
+        path: .
+
+    - name: Download EXE
+      uses: actions/download-artifact@v4
+      with:
+        name: Shortcutsy-Release
+        path: .
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: Shortcutsy.msi
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

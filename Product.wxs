@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Package Name="Shortcutsy"
+             Manufacturer="Shortcutsy"
+             Version="1.0.0.0"
+             UpgradeCode="E8D9F1A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A"
+             Scope="perUser">
+        
+        <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+        
+        <MediaTemplate EmbedCab="yes" />
+        
+        <Feature Id="ProductFeature" Title="Shortcutsy" Level="1">
+            <ComponentRef Id="MainExecutable" />
+            <ComponentRef Id="MonoGameFramework" />
+            <ComponentRef Id="ConfigFiles" />
+            <ComponentRef Id="ContentFiles" />
+            <ComponentRef Id="ApplicationShortcut" />
+        </Feature>
+        
+        <StandardDirectory Id="ProgramFilesFolder">
+            <Directory Id="INSTALLFOLDER" Name="Shortcutsy">
+                <Component Id="MainExecutable" Guid="A1B2C3D4-E5F6-7890-ABCD-EF1234567890">
+                    <File Id="ShortcutsyExe" Source="$(var.SourceDir)\Shortcutsy.exe" KeyPath="yes" />
+                    <File Source="$(var.SourceDir)\Shortcutsy.dll" />
+                    <File Source="$(var.SourceDir)\shortcuts.json" />
+                </Component>
+                <Component Id="MonoGameFramework" Guid="B2C3D4E5-F6A7-8901-BCDE-F12345678901">
+                    <File Source="$(var.SourceDir)\MonoGame.Framework.dll" KeyPath="yes" />
+                    <File Source="$(var.SourceDir)\SharpDX.dll" />
+                    <File Source="$(var.SourceDir)\SharpDX.DXGI.dll" />
+                    <File Source="$(var.SourceDir)\SharpDX.Direct2D1.dll" />
+                    <File Source="$(var.SourceDir)\SharpDX.Direct3D11.dll" />
+                    <File Source="$(var.SourceDir)\SharpDX.Direct3D9.dll" />
+                    <File Source="$(var.SourceDir)\SharpDX.Mathematics.dll" />
+                    <File Source="$(var.SourceDir)\SharpDX.MediaFoundation.dll" />
+                    <File Source="$(var.SourceDir)\SharpDX.XAudio2.dll" />
+                    <File Source="$(var.SourceDir)\SharpDX.XInput.dll" />
+                </Component>
+                <Component Id="ConfigFiles" Guid="C3D4E5F6-A7B8-9012-CDEF-123456789012">
+                    <File Source="$(var.SourceDir)\Shortcutsy.deps.json" KeyPath="yes" />
+                    <File Source="$(var.SourceDir)\Shortcutsy.runtimeconfig.json" />
+                </Component>
+                <Directory Id="ContentFolder" Name="Content">
+                    <Component Id="ContentFiles" Guid="E5F6A7B8-C9D0-1234-EF01-345678901234">
+                        <File Source="$(var.SourceDir)\Content\Font.spritefont" KeyPath="yes" />
+                        <File Source="$(var.SourceDir)\Content\LargeFont.spritefont" />
+                        <File Source="$(var.SourceDir)\Content\music.wav" />
+                    </Component>
+                </Directory>
+            </Directory>
+        </StandardDirectory>
+        
+        <StandardDirectory Id="ProgramMenuFolder">
+            <Component Id="ApplicationShortcut" Guid="D4E5F6A7-B8C9-0123-DEF0-234567890123">
+                <Shortcut Id="ApplicationStartMenuShortcut"
+                          Name="Shortcutsy"
+                          Description="Retro 80s Missile Command-style keyboard shortcut game"
+                          Target="[INSTALLFOLDER]Shortcutsy.exe"
+                          WorkingDirectory="INSTALLFOLDER" />
+                <RemoveFolder Id="CleanUpShortCut" Directory="ProgramMenuFolder" On="uninstall" />
+                <RegistryValue Root="HKCU" Key="Software\Shortcutsy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+            </Component>
+        </StandardDirectory>
+    </Package>
+</Wix>
