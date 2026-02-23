@@ -61,6 +61,7 @@ export class Game {
     this.input = new InputManager();
     this.input.setGameActive(true);
     this.audio = new AudioManager();
+    this.audio.loadMusic();
     this.highScoreManager = new HighScoreManager();
 
     this.highScoreManager.load();
@@ -99,6 +100,7 @@ export class Game {
       } else if (this.gameState === GameState.Paused) {
         this.gameState = GameState.Playing;
       } else if (this.gameState === GameState.GameOver) {
+        this.audio.stopMusic();
         this.gameState = GameState.Title;
       } else if (this.gameState === GameState.LevelSelect) {
         this.gameState = GameState.Title;
@@ -568,9 +570,12 @@ export class Game {
 
     const allShortcuts = ShortcutDatabase.instance.getShortcutsForLevel(10);
     this.availableShortcuts = allShortcuts.filter(s => s.level === startingLevel);
+
+    this.audio.startMusic();
   }
 
   private gameOver(): void {
+    this.audio.stopMusic();
     const isNewRecord = this.highScoreManager.addScore(this.score, this.level);
 
     if (isNewRecord) {
