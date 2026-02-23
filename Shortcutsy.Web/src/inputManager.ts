@@ -25,7 +25,7 @@ export class InputManager {
         e.stopImmediatePropagation();
         // Add the key anyway so game can use it
         this.currentKeys.add(this.normalizeKey(e));
-        return false;
+        return;
       }
       
       // Prevent browser defaults for other game keys
@@ -52,24 +52,6 @@ export class InputManager {
   
   setGameActive(active: boolean): void {
     (this as any)._gameActive = active;
-  }
-      this.currentKeys.add(this.normalizeKey(e));
-      // For dangerous shortcuts, keep preventing
-      if (e.ctrlKey || e.metaKey) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-      }
-    }, { capture: true, passive: false });
-
-    window.addEventListener('keyup', (e) => {
-      this.currentKeys.delete(this.normalizeKey(e));
-    }, { passive: false });
-
-    // Handle losing focus
-    window.addEventListener('blur', () => {
-      this.currentKeys.clear();
-    });
   }
 
   private shouldPreventDefault(e: KeyboardEvent): boolean {
