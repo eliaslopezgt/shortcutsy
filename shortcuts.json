@@ -4,49 +4,49 @@
   { "Action": "Copy", "Keys": ["Ctrl+C"], "Level": 1 },
   { "Action": "Paste", "Keys": ["Ctrl+V"], "Level": 1 },
   { "Action": "Cut", "Keys": ["Ctrl+X"], "Level": 1 },
-  
+
   { "Action": "Undo", "Keys": ["Ctrl+Z"], "Level": 2 },
   { "Action": "Redo", "Keys": ["Ctrl+Y"], "Level": 2 },
   { "Action": "Select All", "Keys": ["Ctrl+A"], "Level": 2 },
   { "Action": "New File", "Keys": ["Ctrl+N"], "Level": 2 },
   { "Action": "Close", "Keys": ["Ctrl+W"], "Level": 2 },
-  
+
   { "Action": "Replace", "Keys": ["Ctrl+H"], "Level": 3 },
   { "Action": "Go to Line", "Keys": ["Ctrl+G"], "Level": 3 },
   { "Action": "Build Solution", "Keys": ["Ctrl+Shift+B"], "Level": 3 },
   { "Action": "Go to Definition", "Keys": ["F12"], "Level": 3 },
   { "Action": "Find All References", "Keys": ["Shift+F12"], "Level": 3 },
-  
+
   { "Action": "Start Debug", "Keys": ["F5"], "Level": 4 },
   { "Action": "Stop Debug", "Keys": ["Shift+F5"], "Level": 4 },
   { "Action": "Step Over", "Keys": ["F10"], "Level": 4 },
   { "Action": "Step Into", "Keys": ["F11"], "Level": 4 },
   { "Action": "Toggle Breakpoint", "Keys": ["F9"], "Level": 4 },
-  
+
   { "Action": "Comment Selection", "Keys": ["Ctrl+K", "Ctrl+C"], "Level": 5 },
   { "Action": "Uncomment Selection", "Keys": ["Ctrl+K", "Ctrl+U"], "Level": 5 },
   { "Action": "Format Document", "Keys": ["Ctrl+K", "Ctrl+D"], "Level": 5 },
   { "Action": "Insert Snippet", "Keys": ["Ctrl+K", "Ctrl+X"], "Level": 5 },
   { "Action": "Code Snippets", "Keys": ["Ctrl+K", "Ctrl+B"], "Level": 5 },
-  
+
   { "Action": "Solution Explorer", "Keys": ["Ctrl+Alt+L"], "Level": 6 },
   { "Action": "Properties Window", "Keys": ["F4"], "Level": 6 },
   { "Action": "Toolbox", "Keys": ["Ctrl+Alt+X"], "Level": 6 },
   { "Action": "Output", "Keys": ["Ctrl+Alt+O"], "Level": 6 },
   { "Action": "Full Screen", "Keys": ["Shift+Alt+Enter"], "Level": 6 },
-  
+
   { "Action": "New Project", "Keys": ["Ctrl+Shift+N"], "Level": 7 },
   { "Action": "Save All", "Keys": ["Ctrl+Shift+S"], "Level": 7 },
   { "Action": "Add Existing Item", "Keys": ["Shift+Alt+A"], "Level": 7 },
   { "Action": "Add New Item", "Keys": ["Ctrl+Shift+A"], "Level": 7 },
   { "Action": "Rename", "Keys": ["Ctrl+R", "Ctrl+R"], "Level": 7 },
-  
+
   { "Action": "Next Document", "Keys": ["Ctrl+F6"], "Level": 8 },
   { "Action": "Close Document", "Keys": ["Ctrl+F4"], "Level": 8 },
   { "Action": "Toggle Bookmark", "Keys": ["Ctrl+K", "Ctrl+K"], "Level": 8 },
   { "Action": "Next Bookmark", "Keys": ["Ctrl+K", "Ctrl+N"], "Level": 8 },
   { "Action": "Toggle Outlining", "Keys": ["Ctrl+M", "Ctrl+M"], "Level": 8 },
-  
+
   { "Action": "Help F1", "Keys": ["F1"], "Level": 9 },
   { "Action": "Quick Launch", "Keys": ["Ctrl+Q"], "Level": 9 },
   { "Action": "Navigate To", "Keys": ["Ctrl+,"], "Level": 9 },
