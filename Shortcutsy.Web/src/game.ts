@@ -1050,7 +1050,7 @@ export class Game {
     const yPos = 200;
 
     const levelSize = this.renderer.measureNormal(levelText);
-    this.renderer.drawNormal(levelText, 320 - levelSize.width / 2, yPos, r, g, b, 255, 16, 'Consolas, monospace', scale);
+    this.renderer.drawNormal(levelText, 320 - levelSize.width / 2, yPos, r, g, b, 255, scale);
 
     if (this.levelTransitionTimer > 1 && this.level < this.maxLevel) {
       const getReady = 'GET READY!';
@@ -1185,7 +1185,7 @@ export class Game {
     this.renderer.fillRect(x + 6, y + 4, 4, 4, 255, 255, 255);
 
     const num = (rank + 1).toString();
-    this.renderer.drawSmall(num, x + 6, y + 4, 0, 0, 0, 255, 0.7);
+    this.renderer.drawSmall(num, x + 6, y + 4, 0, 0, 0);
   }
 
   private drawScanlines(): void {
