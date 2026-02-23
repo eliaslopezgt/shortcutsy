@@ -1,5 +1,7 @@
 # Shortcutsy
 
+**Play the web version:** https://eliaslopezgt.github.io/shortcutsy/
+
 ![Shorcutsy main screen](./main-screen.png)
 
 A retro 80s Missile Command-style game that helps players memorize Visual Studio keyboard shortcuts through gameplay.
